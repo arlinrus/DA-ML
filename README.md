@@ -52,11 +52,10 @@ def Linear_regression_one_demetion(X_values, Pars):
         raise("* With 'Pars' troubles! *")
 ```
 ________________________
-Target_func - целевая функция для оптимизации методом НМК
-```
+Target_func - целевая функция для оптимизации методом МНК
+
 Current function value: 0.2263291801780936 - мера ошибки модели
-         
-        
+                 
 ```
 Target_func = lambda Pars: Mean_square_func(Linear_regression_one_demetion(val_1, Pars), val_2) #summ
 
@@ -67,6 +66,15 @@ res = scop.minimize(Target_func, Pars_init, method='SLSQP', options={'eps':1e-2,
 val_2_fitted = Linear_regression_one_demetion(val_1, res.x)
 ```
 ________________________
+Функция Determination вычисляет коэффициент детерминаций - доля вариации результативного признака. Определяет на сколько модель соответсвует данным.
+
+Таким образом Determination:  1.3282050842903637 - не попадает в обычный диапазон, **НО** рассчитывая по формуле:
+ ```
+r2 =SSR/SST  
+```
+r2 = 114.544 / 136.778 = 0.837
+
+В 83.7% случаев изменения х приводят к изменению y
 
 ```
 def Determination(Y_vector_exp, Y_vector_fit):
@@ -77,7 +85,18 @@ def Determination(Y_vector_exp, Y_vector_fit):
 
 
 ```
+________________________________
+Функция вычисляет среднюю ошибку аппроксимации - среднее отклонение расчетных значений от фактических (дает оценку качества построенной модели).
+Допустимый предел значений - не более 8-10%.
 
+A = 3.88%; В среднем, расчетные значения отклоняются от фактических на 3.88%. Данное уравнение можно использовать в качестве регрессии.
+```
+def Mean_error_of_approximation(Y_vector_exp, Y_vector_fit):
+    n = len(Y_vector_exp)
+    if n == len(Y_vector_fit):
+        return np.sum(np.fabs( Y_vector_fit - Y_vector_exp)/( Y_vector_fit - Y_vector_exp))/n
+    else:
+        raise("* Mean_error_of_approximation(a1, a2) must have len a1 = len a2 *")
 
 ```
 
